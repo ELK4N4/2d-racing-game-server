@@ -34,7 +34,6 @@ function getAllRooms() {
 function getAllPlayersInRoom(roomId) {
     let players = [];
     let room = roomsDB.get(roomId);
-    console.log(roomId);
     room.playersList.forEach(id => {
         let player = playersDB.get(id);
         players.push(player);
@@ -111,11 +110,16 @@ app.get('/quick-match/:players', function(req, res, next) {
 app.post('/room/:id', function(req, res, next) {
     let roomId = req.params.id;
     let room = roomsDB.get(roomId);
-    if(room.players === room.playersList) {
+
+    console.log(room);
+
+    if(room.players == room.playersList.length) {
         room.started = true;
         roomsDB.set(roomId, room);
     }
-    res.json(room);
+    let player = req.body.player;
+    playersDB.set(player.id, player);
+    res.json({room, players: getAllPlayersInRoom(roomId)});
 });
 
 ////////////
