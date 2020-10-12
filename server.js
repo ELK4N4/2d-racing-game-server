@@ -2,8 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 
-const carColors = ['Red', 'Blue', 'Yellow', 'Black'];
-
 
 // Set port
 const PORT = process.env.PORT || 3000;

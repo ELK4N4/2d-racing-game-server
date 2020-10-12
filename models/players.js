@@ -2,6 +2,10 @@ const { v4: uuidv4 } = require('uuid');
 const NodeCache = require( "node-cache" );
 const playersDB = new NodeCache();
 
+const carColors = ['Red', 'Blue', 'Yellow', 'Black'];
+
+
+
 function createNewPlayer() {
     let newPlayer = {
         id: uuidv4(),
