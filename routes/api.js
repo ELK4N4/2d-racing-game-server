@@ -4,7 +4,11 @@ const router = express.Router();
 const roomsDB = require('../models/rooms');
 const playersDB = require('../models/players');
 
-
+const carColors = ['Red', 'Blue', 'Yellow', 'Black'];
+function setPlayerCarColor(playerNumber, player) {
+    player.color = carColors[playerNumber];
+    playersDB.updatePlayerById(player.id, player);
+}
 
 router.get('/quick-match/:players', function(req, res, next) {
     let newPlayer = playersDB.createNewPlayer();
@@ -13,19 +17,20 @@ router.get('/quick-match/:players', function(req, res, next) {
     let roomId;
     let addedToRoom = false;
 
-    allRooms.forEach(id => {
-        let room = roomsDB.getRoomById(id);
+    allRooms.forEach(room => {
         if(room.players !== req.params.players) {
             return;
-        } else if (room.players > room.playersList.length) {
-            roomsDB.addPlayerToRoom(id, newPlayer);
+        } else if (room.players > room.playersList.length && !gameStarted) {
+            setPlayerCarColor(room.playersList.length, newPlayer);
+            roomsDB.addPlayerToRoom(room.id, newPlayer);
             addedToRoom = true;
-            roomId = id;
+            roomId = room.id;
         }
     });
 
     if(!addedToRoom) {
         roomId = roomsDB.openNewRoom(req.params.players);
+        setPlayerCarColor(0, newPlayer);
         roomsDB.addPlayerToRoom(roomId, newPlayer);
     }
 
@@ -37,12 +42,21 @@ router.post('/room/:id', function(req, res, next) {
     let room = roomsDB.getRoomById(roomId)
 
     if(room.players == room.playersList.length) {
-        room.started = true;
+        room.gameStarted = true;
         roomsDB.updateRoomById(roomId, room);
     }
     let player = req.body.player;
     playersDB.updatePlayerById(player.id, player);
-    res.json({room, players: roomsDB.getAllPlayersInRoom(roomId)});
+    res.json({room, players: roomsDB.getAllPlayersIdInRoom(roomId)});
+});
+
+//Testing
+router.get('/rooms/', function(req, res, next) {
+    res.json(roomsDB.getAllRooms());
+});
+
+router.get('/players/', function(req, res, next) {
+    res.json(playersDB.getAllPlayers());
 });
 
 module.exports = router;

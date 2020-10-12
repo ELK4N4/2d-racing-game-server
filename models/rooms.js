@@ -5,14 +5,17 @@ const roomsDB = new NodeCache();
 function getAllRooms() {
     let allRooms = [];
     let roomsKeys = roomsDB.keys();
+
     roomsKeys.forEach(id => {
+
         let room = roomsDB.get(id);
+
         allRooms.push(room);
     });
     return allRooms;
 }
 
-function getAllPlayersInRoom(roomId) {
+function getAllPlayersIdInRoom(roomId) {
     let players = [];
     let room = roomsDB.get(roomId);
     room.playersList.forEach(id => {
@@ -28,10 +31,17 @@ function openNewRoom(players) {
         id: roomId,
         players: players,
         playersList: [],
-        started: false
+        gameStarted: false
     };
     roomsDB.set(roomId, room);
     return roomId;
+}
+
+
+function addPlayerToRoom(roomId, player) {
+    let room = roomsDB.get(roomId);
+    room.playersList.push(player.id);
+    roomsDB.set(roomId, room);
 }
 
 function getRoomById(roomId) {
@@ -44,6 +54,7 @@ function updateRoomById(roomId, updatedRoom) {
 
 module.exports.getAllRooms = getAllRooms;
 module.exports.openNewRoom = openNewRoom;
-module.exports.getAllRooms = getAllPlayersInRoom;
+module.exports.getAllPlayersIdInRoom = getAllPlayersIdInRoom;
+module.exports.addPlayerToRoom = addPlayerToRoom;
 module.exports.getRoomById = getRoomById;
 module.exports.updateRoomById = updateRoomById;
