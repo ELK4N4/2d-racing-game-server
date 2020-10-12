@@ -20,7 +20,7 @@ router.get('/quick-match/:players', function(req, res, next) {
     allRooms.forEach(room => {
         if(room.players !== req.params.players) {
             return;
-        } else if (room.players > room.playersList.length && !gameStarted) {
+        } else if (room.players > room.playersList.length && !room.gameStarted) {
             setPlayerCarColor(room.playersList.length, newPlayer);
             roomsDB.addPlayerToRoom(room.id, newPlayer);
             addedToRoom = true;
@@ -45,6 +45,7 @@ router.post('/room/:id', function(req, res, next) {
         room.gameStarted = true;
         roomsDB.updateRoomById(roomId, room);
     }
+
     let player = req.body.player;
     playersDB.updatePlayerById(player.id, player);
     res.json({room, players: roomsDB.getAllPlayersIdInRoom(roomId)});
