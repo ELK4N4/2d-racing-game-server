@@ -10,7 +10,7 @@ function setPlayerCarColor(playerNumber, player) {
     playersDB.updatePlayerById(player.id, player);
 }
 
-router.get('/quick-match/:players', function(req, res, next) {
+router.get('/quick-match/:maxPlayers', function(req, res, next) {
     let newPlayer = playersDB.createNewPlayer();
 
     let allRooms = roomsDB.getAllRooms();
@@ -18,9 +18,9 @@ router.get('/quick-match/:players', function(req, res, next) {
     let addedToRoom = false;
 
     allRooms.forEach(room => {
-        if(room.players !== req.params.players) {
+        if(room.maxPlayers !== req.params.maxPlayers) {
             return;
-        } else if (room.players > room.playersList.length && !room.gameStarted) {
+        } else if (room.maxPlayers > room.playersList.length && !room.gameStarted) {
             setPlayerCarColor(room.playersList.length, newPlayer);
             roomsDB.addPlayerToRoom(room.id, newPlayer);
             addedToRoom = true;
@@ -29,7 +29,7 @@ router.get('/quick-match/:players', function(req, res, next) {
     });
 
     if(!addedToRoom) {
-        roomId = roomsDB.openNewRoom(req.params.players);
+        roomId = roomsDB.openNewRoom(req.params.maxPlayers);
         setPlayerCarColor(0, newPlayer);
         roomsDB.addPlayerToRoom(roomId, newPlayer);
     }
@@ -41,7 +41,7 @@ router.post('/room/:id', function(req, res, next) {
     let roomId = req.params.id;
     let room = roomsDB.getRoomById(roomId)
 
-    if(room.players == room.playersList.length) {
+    if(room.maxPlayers == room.playersList.length) {
         room.gameStarted = true;
         roomsDB.updateRoomById(roomId, room);
     }

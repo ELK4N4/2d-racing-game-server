@@ -25,11 +25,11 @@ function getAllPlayersIdInRoom(roomId) {
     return players;
 }
 
-function openNewRoom(players) {
+function openNewRoom(maxPlayers) {
     let roomId = uuidv4();
     let room = { 
         id: roomId,
-        players: players,
+        maxPlayers: maxPlayers,
         playersList: [],
         gameStarted: false
     };
