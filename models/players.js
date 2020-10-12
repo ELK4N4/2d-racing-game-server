@@ -18,6 +18,7 @@ function createNewPlayer() {
         id: uuidv4(),
         x: 0,
         y: 0,
+        angle: 0,
         finished: false
     }
     playersDB.set(newPlayer.id, newPlayer);
