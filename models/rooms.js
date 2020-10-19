@@ -15,15 +15,6 @@ function getAllRooms() {
     return allRooms;
 }
 
-function getAllPlayersIdInRoom(roomId) {
-    let players = [];
-    let room = roomsDB.get(roomId);
-    room.playersList.forEach(id => {
-        let player = playersDB.get(id);
-        players.push(player);
-    });
-    return players;
-}
 
 function openNewRoom(maxPlayers) {
     let roomId = uuidv4();
@@ -54,7 +45,6 @@ function updateRoomById(roomId, updatedRoom) {
 
 module.exports.getAllRooms = getAllRooms;
 module.exports.openNewRoom = openNewRoom;
-module.exports.getAllPlayersIdInRoom = getAllPlayersIdInRoom;
 module.exports.addPlayerToRoom = addPlayerToRoom;
 module.exports.getRoomById = getRoomById;
 module.exports.updateRoomById = updateRoomById;

@@ -13,6 +13,15 @@ function getAllPlayers(){
     return allPlayers;
 }
 
+function getAllPlayersIdsAInARoom(room) {
+    let players = [];
+    room.playersList.forEach(id => {
+        let player = playersDB.get(id);
+        players.push(player);
+    });
+    return players;
+}
+
 function createNewPlayer() {
     let newPlayer = {
         id: uuidv4(),
@@ -31,5 +40,6 @@ function updatePlayerById(playerId, updatedPlayer) {
 }
 
 module.exports.getAllPlayers = getAllPlayers;
+module.exports.getAllPlayersIdsAInARoom = getAllPlayersIdsAInARoom;
 module.exports.createNewPlayer = createNewPlayer;
 module.exports.updatePlayerById = updatePlayerById;
