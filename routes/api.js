@@ -51,6 +51,10 @@ router.post('/room/:id', function(req, res, next) {
     res.json({room, players: playersDB.getAllPlayersIdsAInARoom(room)});
 });
 
+router.post('/test/:id', function(req, res, next) {
+    res.json({params: req.params.id, body: req.params});
+});
+
 //Testing
 router.get('/rooms/', function(req, res, next) {
     res.json(roomsDB.getAllRooms());
