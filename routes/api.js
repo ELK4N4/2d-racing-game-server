@@ -48,6 +48,7 @@ router.post('/room/:id', function(req, res, next) {
 
     let player = req.body.player;
     playersDB.updatePlayerById(player.id, player);
+
     res.json({room, players: playersDB.getAllPlayersIdsAInARoom(room)});
 });
 
