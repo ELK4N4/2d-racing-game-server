@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const boxen = require('boxen');
+const chalk = require('chalk');
+
 
 const roomsDB = require('../models/rooms');
 const playersDB = require('../models/players');
@@ -33,6 +36,13 @@ router.get('/quick-match/:maxPlayers', function(req, res, next) {
         setPlayerCarColor(0, newPlayer);
         roomsDB.addPlayerToRoom(roomId, newPlayer);
     }
+
+
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0);
+    console.log(boxen(`  New player(${newPlayer.color}) connected to ${req.params.maxPlayers} players room  `, {padding: 0, margin: 0}));
+    console.log(chalk.green(`Players connected to the server: ${playersDB.getAllPlayers().length}`));
+    process.stdout.write("> ");
 
     res.json({room: roomsDB.getRoomById(roomId), player: newPlayer});
 });
