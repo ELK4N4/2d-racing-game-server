@@ -3,7 +3,6 @@ const router = express.Router();
 const boxen = require('boxen');
 const chalk = require('chalk');
 
-
 const roomsDB = require('../models/rooms');
 const playersDB = require('../models/players');
 
@@ -62,6 +61,7 @@ router.post('/room/:id', function(req, res, next) {
     res.json({room, players: playersDB.getAllPlayersIdsAInARoom(room)});
 });
 
+// TODO remove this route
 router.post('/test/:id', function(req, res, next) {
     res.json({params: req.params.id, body: req.body});
 });
